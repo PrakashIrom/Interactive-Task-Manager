@@ -23,7 +23,8 @@ fun CustomButton(
         shape = shape,
         colors = colors
     ) {
-        Text(text = text,
+        Text(
+            text = text,
             color = Color(0xFFFFFFFF),
             fontWeight = FontWeight.W300
         )

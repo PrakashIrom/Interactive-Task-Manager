@@ -1,7 +1,5 @@
 package com.apui.interactivetaskmanager.ui.screens.taskcreation
 
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,21 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.apui.interactivetaskmanager.data.model.Priority
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import com.apui.interactivetaskmanager.ui.screens.TopBarViewModel
-import com.apui.interactivetaskmanager.ui.screens.home.TaskListViewModel
 import com.apui.interactivetaskmanager.utils.CustomButton
 import com.apui.interactivetaskmanager.utils.DatePickerModal
 import com.apui.interactivetaskmanager.utils.OutlineTextField
@@ -46,15 +37,10 @@ import com.apui.interactivetaskmanager.utils.Screens
 import com.apui.interactivetaskmanager.utils.TaskDropDownMenu
 import com.apui.interactivetaskmanager.utils.convertMillisToDate
 import com.apui.interactivetaskmanager.utils.showToast
-import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun TaskCreationScreen(
