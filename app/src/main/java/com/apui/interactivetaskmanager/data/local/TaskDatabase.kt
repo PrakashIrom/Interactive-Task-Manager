@@ -9,7 +9,7 @@ import com.apui.interactivetaskmanager.data.model.TaskEntity
 @Database(entities = [TaskEntity::class], version = 1, exportSchema = false)
 abstract class TaskDatabase : RoomDatabase() {
 
-    abstract fun taskDap(): TaskDAO
+    abstract fun taskDao(): TaskDAO
 
     companion object {
         @Volatile

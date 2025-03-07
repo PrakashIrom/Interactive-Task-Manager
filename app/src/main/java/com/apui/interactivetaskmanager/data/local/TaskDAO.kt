@@ -1,11 +1,13 @@
 package com.apui.interactivetaskmanager.data.local
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface TaskDAO {
     @Query("SELECT * FROM tasks ORDER BY dueDate desc")
     fun getAllTasksByDate(): Flow<List<TaskEntity>>
