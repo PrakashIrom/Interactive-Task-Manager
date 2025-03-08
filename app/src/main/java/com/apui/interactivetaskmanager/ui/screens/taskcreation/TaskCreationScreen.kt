@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apui.interactivetaskmanager.data.model.Priority
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import com.apui.interactivetaskmanager.ui.screens.TopBarViewModel
@@ -45,7 +46,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun TaskCreationScreen(
     viewModel: TopBarViewModel = koinViewModel(),
-    taskListViewModel: TaskInsertViewModel = koinViewModel()
+    taskListViewModel: TaskInsertViewModel = koinViewModel(),
+    navController: NavHostController
 ) {
     LaunchedEffect(Unit) { viewModel.currentTop(Screens.TASK_CREATION) }
     TaskCreationContent { title,
@@ -61,6 +63,7 @@ fun TaskCreationScreen(
                     dueDate = dueDate
                 )
             )
+            navController.navigateUp()
         }
     }
 }

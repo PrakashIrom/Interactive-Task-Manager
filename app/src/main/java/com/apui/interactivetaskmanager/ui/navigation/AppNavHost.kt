@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.apui.interactivetaskmanager.ui.screens.home.Home
+import com.apui.interactivetaskmanager.ui.screens.settings.SettingsScreen
 import com.apui.interactivetaskmanager.ui.screens.taskcreation.TaskCreationScreen
 
 @Composable
@@ -24,10 +25,10 @@ fun AppNavHost(
 
         }
         composable(NavRoutes.TaskCreation.route) {
-            TaskCreationScreen()
+            TaskCreationScreen(navController = navController)
         }
         composable(NavRoutes.Settings.route) {
-
+            SettingsScreen()
         }
     }
 }

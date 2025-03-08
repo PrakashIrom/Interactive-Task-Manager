@@ -10,13 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.apui.interactivetaskmanager.ui.navigation.AppNavHost
 import com.apui.interactivetaskmanager.ui.navigation.NavRoutes
+import com.apui.interactivetaskmanager.ui.screens.TopBarViewModel
+import com.apui.interactivetaskmanager.ui.screens.settings.ThemeSettingsViewModel
 import com.apui.interactivetaskmanager.ui.theme.InteractiveTaskManagerTheme
 import com.apui.interactivetaskmanager.utils.FABButton
 import com.apui.interactivetaskmanager.utils.TopBar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -24,15 +28,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            InteractiveTaskManagerTheme() {
+            val themeSettingsViewModel by viewModel<ThemeSettingsViewModel>()
+            val isDarkMode = themeSettingsViewModel.isDarkMode.collectAsStateWithLifecycle().value
+            InteractiveTaskManagerTheme(darkTheme = isDarkMode) {
 
                 val navController = rememberNavController()
                 val currentBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = currentBackStackEntry?.destination?.route
+                val currentRoute = currentBackStackEntry?.destination?.route ?: NavRoutes.Home.route
+                val topBarViewModel by viewModel<TopBarViewModel>()
 
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        TopBar()
+                        TopBar(viewModel = topBarViewModel, navController)
                     },
                     floatingActionButton = {
                         if (currentRoute == NavRoutes.Home.route)
