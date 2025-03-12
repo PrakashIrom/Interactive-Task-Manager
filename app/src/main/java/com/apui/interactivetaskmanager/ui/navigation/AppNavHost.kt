@@ -1,6 +1,7 @@
 package com.apui.interactivetaskmanager.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,14 +13,15 @@ import com.apui.interactivetaskmanager.ui.screens.taskcreation.TaskCreationScree
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showBottomSheet: MutableState<Boolean>
 ) {
     NavHost(
         navController = navController,
         startDestination = NavRoutes.Home.route
     ) {
         composable(NavRoutes.Home.route) {
-            Home(modifier = modifier)
+            Home(modifier = modifier, showBottomSheet = showBottomSheet)
         }
         composable(NavRoutes.TaskDetails.route) {
 

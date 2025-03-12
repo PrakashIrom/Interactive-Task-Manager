@@ -54,7 +54,7 @@ fun TaskCreationScreen(
                           description,
                           priority,
                           dueDate ->
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             taskListViewModel.insertTask(
                 TaskEntity(
                     title = title,
@@ -79,7 +79,7 @@ fun TaskCreationContent(onTaskAdded: (String, String, Priority, String) -> Unit)
 
     LaunchedEffect(showToast) {
         if (showToast) {
-            showToast("Please enter Title, it cannot be empty ", context)
+            showToast("Please enter Task Title, it cannot be empty!", context)
             showToast = false
         }
     }

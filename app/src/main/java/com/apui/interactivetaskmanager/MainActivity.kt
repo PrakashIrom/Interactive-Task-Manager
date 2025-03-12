@@ -7,8 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -36,10 +40,14 @@ class MainActivity : ComponentActivity() {
                 val currentBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = currentBackStackEntry?.destination?.route ?: NavRoutes.Home.route
                 val topBarViewModel by viewModel<TopBarViewModel>()
+                val showBottomSheet = remember { mutableStateOf(false) }
+                val onFilterClick: () -> Unit = {
+                    showBottomSheet.value = true
+                }
 
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        TopBar(viewModel = topBarViewModel, navController)
+                        TopBar(viewModel = topBarViewModel, navController, onFilterClick)
                     },
                     floatingActionButton = {
                         if (currentRoute == NavRoutes.Home.route)
@@ -48,7 +56,8 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     AppNavHost(
                         navController = navController,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        showBottomSheet = showBottomSheet
                     )
                 }
             }

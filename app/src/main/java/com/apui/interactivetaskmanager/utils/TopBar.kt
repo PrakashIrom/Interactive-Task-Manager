@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,6 +25,7 @@ import com.apui.interactivetaskmanager.ui.screens.TopBarViewModel
 fun TopBar(
     viewModel: TopBarViewModel,
     navController: NavHostController,
+    onFilterClick: () -> Unit
 ) {
     val screen by viewModel.selectedScreen
     TopAppBar(
@@ -36,6 +38,15 @@ fun TopBar(
                         navController.navigateUp()
                     }
                 )
+            else
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.List,
+                    contentDescription = "Filter",
+                    modifier = Modifier
+                        .clickable {
+                            onFilterClick()
+                        }
+                )
         },
         title = {
             Box(
@@ -46,13 +57,15 @@ fun TopBar(
             }
         },
         actions = {
-            if (screen == Screens.HOME) Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings",
-                modifier = Modifier.clickable {
-                    navController.navigate(NavRoutes.Settings.route)
-                }
-            )
+            if (screen == Screens.HOME) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings",
+                    modifier = Modifier.clickable {
+                        navController.navigate(NavRoutes.Settings.route)
+                    }
+                )
+            }
         },
         modifier = Modifier
     )

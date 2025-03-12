@@ -10,4 +10,11 @@ data class TaskEntity(
     val description: String,
     val priority: Int,
     val dueDate: String,
+    val taskStatus: TaskStatus = TaskStatus.PENDING
 )
+
+enum class TaskStatus {
+    PENDING,
+    IN_PROGRESS,
+    COMPLETED
+}
