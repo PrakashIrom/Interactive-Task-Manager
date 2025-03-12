@@ -15,17 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apui.interactivetaskmanager.data.model.TaskStatus
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -85,17 +80,17 @@ fun SortContent(selectedOption: String, onOptionSelected: (String) -> Unit) {
 fun FilterContent(taskListViewModel: TaskListViewModel = koinViewModel()) {
     val filterMapStatus by taskListViewModel.filterMapStatus.collectAsState()
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column {
         Text(
             text = "Filter By",
             fontWeight = FontWeight.W500,
             fontSize = 20.sp,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 5.dp)
         )
         filterMapStatus.forEach { (status, isChecked) ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 4.dp)
+                modifier = Modifier.padding(horizontal = 10.dp)
             ) {
                 Text(status.name, modifier = Modifier.weight(1f))
                 Checkbox(

@@ -109,7 +109,7 @@ class TaskListViewModel(
             taskRepository.updateTaskStatus(taskId, taskStatus)
             _tasks.value = _tasks.value.map { task ->
                 if (task.id == taskId) task.copy(taskStatus = taskStatus) else task
-            } // ✅ Force UI recomposition with updated task list
+            } //Force UI recomposition with updated task list
         }
     }
 
