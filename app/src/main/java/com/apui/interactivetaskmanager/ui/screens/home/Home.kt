@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,8 +62,10 @@ fun Home(
 
         else -> LazyColumn(modifier = modifier) {
             items(tasks) { task ->
-                TaskItem(task = task, onDeleteClick = onDeleteClick) { taskId, taskStatus ->
-                    taskListViewModel.updateTaskStatus(taskId, taskStatus)
+                key(task.id) {
+                    TaskItem(task = task, onDeleteClick = onDeleteClick) { taskId, taskStatus ->
+                        taskListViewModel.updateTaskStatus(taskId, taskStatus)
+                    }
                 }
             }
         }
