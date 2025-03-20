@@ -13,11 +13,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,13 +37,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apui.interactivetaskmanager.data.model.Priority
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import com.apui.interactivetaskmanager.data.model.TaskStatus
+import com.apui.interactivetaskmanager.ui.screens.settings.ThemeSettingsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskItem(
     task: TaskEntity,
@@ -78,7 +80,6 @@ fun TaskItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DismissBackground(dismissState: SwipeToDismissBoxState) {
     val color = when (dismissState.dismissDirection) {
@@ -106,27 +107,35 @@ fun TaskCard(
     task: TaskEntity,
     modifier: Modifier = Modifier,
     onDeleteClick: (TaskEntity) -> Unit,
-    onStatusChange: (Int, TaskStatus) -> Unit
+    onStatusChange: (Int, TaskStatus) -> Unit,
+    themeSettingsViewModel: ThemeSettingsViewModel = koinViewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedStatus by remember { mutableStateOf(task.taskStatus) }
+    val isDark = themeSettingsViewModel.isDarkMode.collectAsStateWithLifecycle().value
+    val cardBackgroundColor = if (isDark) Color(0xFF2C2C2C) else Color(0xFFEEEEEE)
+    val textColor = if (isDark) Color.White else Color.Black
+    val secondaryTextColor = if (isDark) Color.LightGray else Color.Gray
 
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFEEEEEE))
+        colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-
-            Text(text = task.title, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = task.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = textColor // Dynamic text color
+            )
 
             if (task.description.isNotEmpty()) {
                 Text(
                     text = task.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
+                    color = secondaryTextColor,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -141,16 +150,16 @@ fun TaskCard(
                     text = "Priority: ${Priority.fromValue(task.priority)}",
                     fontWeight = FontWeight.Bold,
                     color = when (task.priority) {
-                        Priority.HIGH.priorityValue -> Color.Red
-                        Priority.MEDIUM.priorityValue -> Color.Yellow
-                        else -> Color.Green
+                        Priority.HIGH.priorityValue -> if (isDark) Color(0xFFFF6B6B) else Color.Red
+                        Priority.MEDIUM.priorityValue -> if (isDark) Color(0xFFFFD166) else Color.Yellow
+                        else -> if (isDark) Color(0xFF06D6A0) else Color.Green
                     },
                     modifier = Modifier.weight(1f)
                 )
 
                 Text(
                     text = "Due: ${task.dueDate}",
-                    color = Color.Blue,
+                    color = if (isDark) Color.Cyan else Color.Blue,
                     modifier = Modifier.padding(end = 8.dp)
                 )
 
@@ -160,7 +169,7 @@ fun TaskCard(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Task",
-                        tint = Color.Red
+                        tint = if (isDark) Color(0xFFFF6B6B) else Color.Red
                     )
                 }
             }
@@ -169,9 +178,12 @@ fun TaskCard(
             Box {
                 Button(
                     onClick = { expanded = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isDark) Color(0xFF1E88E5) else Color(0xFF1976D2)
+                    )
                 ) {
-                    Text(text = "Status: ${task.taskStatus.name}")
+                    Text(text = "Status: ${task.taskStatus.name}", color = Color.White)
                 }
 
                 DropdownMenu(
@@ -180,7 +192,7 @@ fun TaskCard(
                 ) {
                     TaskStatus.entries.forEach { status ->
                         DropdownMenuItem(
-                            text = { Text(status.name) },
+                            text = { Text(status.name, color = textColor) },
                             onClick = {
                                 selectedStatus = status
                                 expanded = false
