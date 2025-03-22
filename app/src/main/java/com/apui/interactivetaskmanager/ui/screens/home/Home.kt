@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import com.apui.interactivetaskmanager.ui.screens.TopBarViewModel
 import com.apui.interactivetaskmanager.utils.CustomBottomSheet
@@ -32,7 +33,8 @@ fun Home(
     topBarViewModel: TopBarViewModel = koinViewModel(),
     taskListViewModel: TaskListViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
-    showBottomSheet: MutableState<Boolean>
+    showBottomSheet: MutableState<Boolean>,
+    navController: NavHostController
 ) {
     LaunchedEffect(Unit) { topBarViewModel.currentTop(Screens.HOME) }
 
@@ -63,7 +65,11 @@ fun Home(
         else -> LazyColumn(modifier = modifier) {
             items(tasks) { task ->
                 key(task.id) {
-                    TaskItem(task = task, onDeleteClick = onDeleteClick) { taskId, taskStatus ->
+                    TaskItem(
+                        task = task,
+                        onDeleteClick = onDeleteClick,
+                        navController = navController
+                    ) { taskId, taskStatus ->
                         taskListViewModel.updateTaskStatus(taskId, taskStatus)
                     }
                 }

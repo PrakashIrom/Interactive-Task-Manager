@@ -1,6 +1,7 @@
 package com.apui.interactivetaskmanager.ui.screens.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,9 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.apui.interactivetaskmanager.data.model.Priority
 import com.apui.interactivetaskmanager.data.model.TaskEntity
 import com.apui.interactivetaskmanager.data.model.TaskStatus
+import com.apui.interactivetaskmanager.ui.navigation.NavRoutes
 import com.apui.interactivetaskmanager.ui.screens.settings.ThemeSettingsViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +54,8 @@ fun TaskItem(
     task: TaskEntity,
     modifier: Modifier = Modifier,
     onDeleteClick: (TaskEntity) -> Unit,
-    onStatusChange: (Int, TaskStatus) -> Unit
+    navController: NavHostController,
+    onStatusChange: (Int, TaskStatus) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val dismissState = rememberSwipeToDismissBoxState(
@@ -75,6 +79,7 @@ fun TaskItem(
             task = task,
             modifier = modifier,
             onDeleteClick = onDeleteClick,
+            navController = navController,
             onStatusChange = onStatusChange
         )
     }
@@ -107,6 +112,7 @@ fun TaskCard(
     task: TaskEntity,
     modifier: Modifier = Modifier,
     onDeleteClick: (TaskEntity) -> Unit,
+    navController: NavHostController,
     onStatusChange: (Int, TaskStatus) -> Unit,
     themeSettingsViewModel: ThemeSettingsViewModel = koinViewModel()
 ) {
@@ -120,7 +126,10 @@ fun TaskCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable {
+                navController.navigate(NavRoutes.TaskDetails.route)
+            },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
     ) {
